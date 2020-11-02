@@ -8,19 +8,23 @@ import {
 
 import Users from './user/pages/Users';
 import NewArt from './arts/pages/NewArt';
+import MainNavigation from './shared/components/Navigation/MainNavigation';
 
 const App = () => {
   return (
     <Router>
-      <Switch>
-        <Route path="/" exact>
+      <MainNavigation />
+      <main>
+        <Switch>
+          <Route path="/" exact>
           <Users />
-        </Route>
-        <Route path="/arts/new" exact>
+          </Route>
+          <Route path="/arts/new" exact>
           <NewArt />
-        </Route>
-        <Redirect to="/" />
-      </Switch>
+          </Route>
+          <Redirect to="/" />
+        </Switch>
+      </main>
     </Router>
   );
 };
