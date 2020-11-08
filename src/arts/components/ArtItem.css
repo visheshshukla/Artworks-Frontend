@@ -1,0 +1,55 @@
+.art-item {
+    margin: 1rem 0;
+  }
+  
+  .art-item__content {
+    padding: 0;
+  }
+  
+  .art-item__info {
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .art-item__image {
+    width: 100%;
+    height: 12.5rem;
+    margin-right: 1.5rem;
+  }
+  
+  .art-item__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .art-item__info h2,
+  .art-item__info h3,
+  .art-item__info p {
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .art-item__actions {
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid #ccc;
+  }
+  
+  .art-item__modal-content {
+    padding: 0;
+  }
+  
+  .art-item__modal-actions {
+    text-align: right;
+  }
+  
+  .art-item__actions button,
+  .art-item__actions a {
+    margin: 0.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .art-item__image {
+      height: 20rem;
+    } 
+  }
