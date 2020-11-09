@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 import ArtList from '../components/ArtList';
 
@@ -30,8 +31,9 @@ const DUMMY_ARTS = [
 ];
 
 const UserArts = () => {
-
-  return <ArtList items={DUMMY_ARTS} />;
+  const userId = useParams().userId;
+  const loadedArts = DUMMY_ARTS.filter(art => art.creator === userId);
+  return <ArtList items={loadedArts} />;
 };
 
 export default UserArts;
