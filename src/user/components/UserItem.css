@@ -12,12 +12,12 @@
   text-decoration: none;
   padding: 1rem;
   color: white;
-  background: #292929;
+  background: #4d4b4b;
 }
 
 .user-item a:hover,
 .user-item a:active {
-  background: #3bb1ff;
+  background: #3d3d3d;
 }
 
 .user-item__content {
@@ -41,7 +41,7 @@
 .user-item:active h2,
 .user-item:hover h3,
 .user-item:active h3 {
-  color: white;
+  color: #3bb1ff;
 }
 
 .user-item__info h3 {
