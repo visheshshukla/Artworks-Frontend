@@ -19,14 +19,16 @@
   color: #292929;
   text-decoration: none;
   padding: 0.5rem;
+  border-radius:0.5em;
+  border-color: #0598fa;
 }
 
 .nav-links a:hover,
 .nav-links a:active,
 .nav-links a.active {
-  background: #f8df00;
-  border-color: #292929;
-  color: #292929;
+  background: #0598fa;
+  border-color: #0598fa;
+  color: #ffffff;
 }
 
 .nav-links button {
@@ -58,7 +60,7 @@
   }
 
   .nav-links a {
-    color: white;
+    color: #0598fa;
     text-decoration: none;
   }
 
