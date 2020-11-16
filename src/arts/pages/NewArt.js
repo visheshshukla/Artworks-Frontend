@@ -6,7 +6,13 @@ import './NewArt.css';
 const NewArt = () => {
   return (
     <form className="art-form">
-      <Input element="input" type="text" label="Title" />
+      <Input
+        element="input"
+        type="text"
+        label="Title"
+        validators={[]}
+        errorText="Please enter a valid title."
+      />
     </form>
   );
 };
