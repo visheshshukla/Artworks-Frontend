@@ -57,6 +57,11 @@ const NewArt = () => {
     });
   }, []);
 
+  const artSubmitHandler = event => {
+    event.preventDefault();
+    console.log(formState.inputs); // send this to the backend!
+  };
+
   return (
     <form className="art-form">
       <Input
