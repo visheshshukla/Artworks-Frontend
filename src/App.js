@@ -8,6 +8,7 @@ import {
 
 import Users from './user/pages/Users';
 import NewArt from './arts/pages/NewArt';
+import UpdateArt from './arts/pages/UpdateArt';
 import UserArts from './arts/pages/UserArts';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 
@@ -25,6 +26,9 @@ const App = () => {
           </Route>
           <Route path="/arts/new" exact>
             <NewArt />
+          </Route>
+          <Route path="/arts/:artId">
+            <UpdateArt />
           </Route>
           <Redirect to="/" />
         </Switch>
