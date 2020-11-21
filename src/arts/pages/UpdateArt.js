@@ -7,6 +7,7 @@ import {
   VALIDATOR_REQUIRE,
   VALIDATOR_MINLENGTH
 } from '../../shared/util/validators';
+import { useForm } from '../../shared/hooks/form-hook';
 import './ArtForm.css';
 
 const DUMMY_ARTS = [
@@ -41,6 +42,25 @@ const UpdateArt = () => {
 
   const identifiedArt = DUMMY_ARTS.find(p => p.id === artId);
 
+  const [formState, inputHandler] = useForm(
+    {
+      title: {
+        value: identifiedArt.title,
+        isValid: true
+      },
+      description: {
+        value: identifiedArt.description,
+        isValid: true
+      }
+    },
+    true
+  );
+
+  const placeUpdateSubmitHandler = event => {
+    event.preventDefault();
+    console.log(formState.inputs);
+  };
+
   if (!identifiedArt) {
     return (
       <div className="center">
@@ -50,7 +70,7 @@ const UpdateArt = () => {
   }
 
   return (
-    <form className="art-form">
+    <form className="art-form" onSubmit={placeUpdateSubmitHandler}>
       <Input
         id="title"
         element="input"
@@ -58,9 +78,9 @@ const UpdateArt = () => {
         label="Title"
         validators={[VALIDATOR_REQUIRE()]}
         errorText="Please enter a valid title."
-        onInput={() => {}}
-        value={identifiedArt.title}
-        valid={true}
+        onInput={inputHandler}
+        initialValue={formState.inputs.title.value}
+        initialValid={formState.inputs.title.isValid}
       />
       <Input
         id="description"
@@ -68,11 +88,11 @@ const UpdateArt = () => {
         label="Description"
         validators={[VALIDATOR_MINLENGTH(5)]}
         errorText="Please enter a valid description (min. 5 characters)."
-        onInput={() => {}}
-        value={identifiedArt.description}
-        valid={true}
+        onInput={inputHandler}
+        initialValue={formState.inputs.description.value}
+        initialValid={formState.inputs.description.isValid}
       />
-      <Button type="submit" disabled={true}>
+      <Button type="submit" disabled={!formState.isValid}>
         UPDATE ART
       </Button>
     </form>
