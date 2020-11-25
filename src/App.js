@@ -25,30 +25,52 @@ const App = () => {
     setIsLoggedIn(false);
   }, []);
 
+  let routes;
+
+  if (isLoggedIn) {
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <Users />
+        </Route>
+        <Route path="/:userId/arts" exact>
+          <UserArts />
+        </Route>
+        <Route path="/arts/new" exact>
+          <NewArt />
+        </Route>
+        <Route path="/arts/:artId">
+          <UpdateArt />
+        </Route>
+        <Redirect to="/" />
+    </Switch>
+    );
+  }
+  else
+  {
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <Users />
+        </Route>
+        <Route path="/:userId/arts" exact>
+          <UserArts />
+        </Route>
+        <Route path="/auth">
+          <Auth />
+        </Route>
+        <Redirect to="/auth" />
+      </Switch>
+    );
+  }
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+    >
       <Router>
         <MainNavigation />
-        <main>
-          <Switch>
-            <Route path="/" exact>
-              <Users />
-            </Route>
-            <Route path="/:userId/arts" exact>
-              <UserArts />
-            </Route>
-            <Route path="/arts/new" exact>
-              <NewArt />
-            </Route>
-            <Route path="/arts/:artId">
-              <UpdateArt />
-            </Route>
-            <Route path="/auth">
-              <Auth />
-            </Route>
-            <Redirect to="/" />
-          </Switch>
-        </main>
+        <main>{routes}</main>
       </Router>
     </AuthContext.Provider>
   );
