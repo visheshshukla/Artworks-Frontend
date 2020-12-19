@@ -23,7 +23,7 @@ const ArtList = props => {
         <ArtItem
           key={art.id}
           id={art.id}
-          image={art.imageUrl}
+          image={art.image}
           title={art.title}
           description={art.description}
           address={art.address}
