@@ -1,39 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import ArtList from '../components/ArtList';
-
-const DUMMY_ARTS = [
-  {
-    id: 'p1',
-    title: 'Art 1',
-    description: 'One of the most famous painting in the world!',
-    imageUrl: 'https://res.cloudinary.com/vishesh123/image/upload/v1598877183/m18lqtmbvsvrqswlcmmj.jpg',
-    address: 'Agra, U.P., India',
-    location: {
-      lat: 27.1767,
-      lng: 78.0081
-    },
-    creator: 'u1'
-  },
-  {
-    id: 'p2',
-    title: 'Art 2',
-    description: 'Another famous painting in the world!',
-    imageUrl: 'https://res.cloudinary.com/vishesh123/image/upload/v1598880593/nh5xl27vna1r0xsweqk9.png',
-    address: 'Mumbai, Maharastra, India',
-    location: {
-      lat: 19.07,
-      lng: 72.87
-    },
-    creator: 'u2'
-  }
-];
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import { useHttpClient } from '../../shared/hooks/http-hook';
 
 const UserArts = () => {
+  const [loadedArts, setLoadedArts] = useState();
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
   const userId = useParams().userId;
-  const loadedArts = DUMMY_ARTS.filter(art => art.creator === userId);
-  return <ArtList items={loadedArts} />;
+
+  useEffect(() => {
+    const fetchArts = async () => {
+      try {
+        const reponseData = await sendRequest(`http://localhost:5000/api/arts/user/${userId}`);
+        setLoadedArts(reponseData.arts);
+      }
+      catch(err) {}
+    }
+    fetchArts();
+  }, [sendRequest, userId]);
+
+  return (
+  <React.Fragment>
+    <ErrorModal error={error} onClear={clearError} />
+    {isLoading && (
+      <div className="center">
+        <LoadingSpinner />
+      </div>
+    )}
+    {!isLoading && loadedArts && <ArtList items={loadedArts} />}
+  </React.Fragment>
+  );
 };
 
 export default UserArts;
