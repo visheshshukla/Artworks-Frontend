@@ -23,6 +23,12 @@ const UserArts = () => {
     fetchArts();
   }, [sendRequest, userId]);
 
+  const artDeletedHandler = deletedArtId => {
+    setLoadedArts(prevArts => 
+      prevArts.filter(art => art.id !== deletedArtId)
+    );
+  };
+
   return (
   <React.Fragment>
     <ErrorModal error={error} onClear={clearError} />
@@ -31,7 +37,7 @@ const UserArts = () => {
         <LoadingSpinner />
       </div>
     )}
-    {!isLoading && loadedArts && <ArtList items={loadedArts} />}
+    {!isLoading && loadedArts && <ArtList items={loadedArts} onDeleteArt={artDeletedHandler}/>}
   </React.Fragment>
   );
 };
