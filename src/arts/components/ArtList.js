@@ -29,6 +29,7 @@ const ArtList = props => {
           address={art.address}
           creatorId={art.creator}
           coordinates={art.location}
+          onDelete={props.onDeleteArt}
         />
       ))}
     </ul>
