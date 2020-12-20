@@ -5,9 +5,14 @@ import Button from '../../shared/components/FormElements/Button';
 import Modal from '../../shared/components/UIElements/Modal';
 import Map from '../../shared/components/UIElements/Map';
 import { AuthContext } from '../../shared/context/auth-context';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import { useHttpClient } from '../../shared/hooks/http-hook';
 import './ArtItem.css';
 
 const ArtItem = props => {
+
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const auth = useContext(AuthContext);
 
@@ -27,13 +32,21 @@ const ArtItem = props => {
     setShowConfirmModal(false);
   };
 
-  const confirmDeleteHandler = () => {
+  const confirmDeleteHandler = async () => {
     setShowConfirmModal(false);
-    console.log('DELETING...');
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/arts/${props.id}`,
+        'DELETE'
+      );
+      props.onDelete(props.id);
+    } 
+    catch(err) {}
   };
 
   return (
     <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
       <Modal
         show={showMap}
         onCancel={closeMapHandler}
@@ -69,6 +82,7 @@ const ArtItem = props => {
       </Modal>
       <li className="art-item">
         <Card className="art-item__content">
+          {isLoading && <LoadingSpinner asOverlay />}
           <div className="art-item__image">
             <img src={props.image} alt={props.title} />
           </div>
