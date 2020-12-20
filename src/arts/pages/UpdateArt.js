@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
@@ -9,38 +9,18 @@ import {
   VALIDATOR_MINLENGTH
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
+import { useHttpClient } from '../../shared/hooks/http-hook';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import { AuthContext } from '../../shared/context/auth-context';
 import './ArtForm.css';
 
-const DUMMY_ARTS = [
-    {
-      id: 'p1',
-      title: 'Art 1',
-      description: 'One of the most famous painting in the world!',
-      imageUrl: 'https://res.cloudinary.com/vishesh123/image/upload/v1598877183/m18lqtmbvsvrqswlcmmj.jpg',
-      address: 'Agra, U.P., India',
-      location: {
-        lat: 27.1767,
-        lng: 78.0081
-      },
-      creator: 'u1'
-    },
-    {
-      id: 'p2',
-      title: 'Art 2',
-      description: 'Another famous painting in the world!',
-      imageUrl: 'https://res.cloudinary.com/vishesh123/image/upload/v1598880593/nh5xl27vna1r0xsweqk9.png',
-      address: 'Mumbai, Maharastra, India',
-      location: {
-        lat: 19.07,
-        lng: 72.87
-      },
-      creator: 'u2'
-    }
-  ];
-
 const UpdateArt = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [loadedArt, setLoadedArt] = useState();
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const artId = useParams().artId;
+  const histroy = useHistory();
+  const auth = useContext(AuthContext);
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -56,33 +36,57 @@ const UpdateArt = () => {
     false
   );
   
-  const identifiedArt = DUMMY_ARTS.find(p => p.id === artId);
-
   useEffect(() => {
-    if(identifiedArt) {
-      setFormData(
-        {
-          title: {
-            value: identifiedArt.title,
-            isValid: true
+    const fetchArt = async () => {
+      try {
+        const reponseData = await sendRequest(`http://localhost:5000/api/arts/${artId}`);
+        setLoadedArt(reponseData.art);
+        setFormData(
+          {
+            title: {
+              value: reponseData.art.title,
+              isValid: true
+            },
+            description: {
+              value: reponseData.art.description,
+              isValid: true
+            }
           },
-          description: {
-            value: identifiedArt.description,
-            isValid: true
-          }
-        },
-        true
-      );
-    }
-    setIsLoading(false);
-  }, [setFormData, identifiedArt]);
+          true
+        );
+      }
+      catch (err) {}
+    };
+    fetchArt();
+  }, [sendRequest, artId,setFormData]);
 
-  const placeUpdateSubmitHandler = event => {
+  const artUpdateSubmitHandler = async event => {
     event.preventDefault();
-    console.log(formState.inputs);
+    try {
+      await sendRequest(`http://localhost:5000/api/arts/${artId}`, 
+      'PATCH', 
+      JSON.stringify({
+        title: formState.inputs.title.value,
+        description: formState.inputs.description.value
+      }),
+      {
+        'Content-Type': 'application/json'
+      }
+      );
+      histroy.push('/' + auth.userId + '/arts');
+    }
+    catch(err) {}
   };
 
-  if (!identifiedArt) {
+  if (isLoading) {
+    return (
+      <div className="center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (!loadedArt && !error) {
     return (
       <div className="center">
         <Card>
@@ -92,41 +96,37 @@ const UpdateArt = () => {
     );
   }
 
-  if (isLoading) {
-    return (
-      <div className="center">
-        <h2>Loading...</h2>
-      </div>
-    );
-  }
-
   return (
-    <form className="art-form" onSubmit={placeUpdateSubmitHandler}>
-      <Input
-        id="title"
-        element="input"
-        type="text"
-        label="Title"
-        validators={[VALIDATOR_REQUIRE()]}
-        errorText="Please enter a valid title."
-        onInput={inputHandler}
-        initialValue={formState.inputs.title.value}
-        initialValid={formState.inputs.title.isValid}
-      />
-      <Input
-        id="description"
-        element="textarea"
-        label="Description"
-        validators={[VALIDATOR_MINLENGTH(5)]}
-        errorText="Please enter a valid description (min. 5 characters)."
-        onInput={inputHandler}
-        initialValue={formState.inputs.description.value}
-        initialValid={formState.inputs.description.isValid}
-      />
-      <Button type="submit" disabled={!formState.isValid}>
-        UPDATE ART
-      </Button>
-    </form>
+    <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+      {!isLoading && loadedArt && 
+      (<form className="art-form" onSubmit={artUpdateSubmitHandler}>
+        <Input
+          id="title"
+          element="input"
+          type="text"
+          label="Title"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter a valid title."
+          onInput={inputHandler}
+          initialValue={loadedArt.title}
+          initialValid={true}
+        />
+        <Input
+          id="description"
+          element="textarea"
+          label="Description"
+          validators={[VALIDATOR_MINLENGTH(5)]}
+          errorText="Please enter a valid description (min. 5 characters)."
+          onInput={inputHandler}
+          initialValue={loadedArt.description}
+          initialValid={true}
+        />
+        <Button type="submit" disabled={!formState.isValid}>
+          UPDATE ART
+        </Button>
+      </form>)}
+    </React.Fragment>
   );
 };
 
