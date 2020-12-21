@@ -1,11 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  Switch
-} from 'react-router-dom';
-
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import Users from './user/pages/Users';
 import NewArt from './arts/pages/NewArt';
 import UpdateArt from './arts/pages/UpdateArt';
