@@ -93,10 +93,10 @@ const ArtItem = props => {
           </div>
           <div className="art-item__actions">
             <Button inverse onClick={openMapHandler}>VIEW ON MAP</Button>
-            {auth.isLoggedIn && (
+            {auth.userId === props.creatorId && (
             <Button to={`/arts/${props.id}`}>EDIT</Button>
             )}
-            {auth.isLoggedIn && (
+            {auth.userId === props.creatorId && (
             <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>
             )}
           </div>
