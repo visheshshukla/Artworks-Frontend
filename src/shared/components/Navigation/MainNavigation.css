@@ -49,10 +49,8 @@
   text-align: center;
   height: 8vh;
   line-height: 8vh;
-  color: #80ccff;
+  color: #0598fa;
   font-family: 'Niconne', cursive;
   font-weight: 700;
-  text-shadow:3px 3px 0px #0598fa,
-              5px 5px 0px #0598fa;  
-              /* b3d3e9 */
+  text-shadow:  -1px 0 #ffffff, 0 1px #ffffff, 1px 0 #ffffff, 0 -1px #ffffff;
 }
