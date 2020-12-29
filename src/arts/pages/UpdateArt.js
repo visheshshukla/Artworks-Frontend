@@ -70,7 +70,8 @@ const UpdateArt = () => {
         description: formState.inputs.description.value
       }),
       {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + auth.token
       }
       );
       histroy.push('/' + auth.userId + '/arts');
