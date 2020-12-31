@@ -36,7 +36,7 @@ const ArtItem = props => {
     setShowConfirmModal(false);
     try {
       await sendRequest(
-        `http://localhost:5000/api/arts/${props.id}`,
+        `${process.env.REACT_APP_BACKEND_URL}/arts/${props.id}`,
         'DELETE',
         null,
         {
@@ -88,7 +88,7 @@ const ArtItem = props => {
         <Card className="art-item__content">
           {isLoading && <LoadingSpinner asOverlay />}
           <div className="art-item__image">
-            <img src={`http://localhost:5000/${props.image}`} alt={props.title} />
+            <img src={`${process.env.REACT_APP_ASSET_URL}/${props.image}`} alt={props.title} />
           </div>
           <div className="art-item__info">
             <h2>{props.title}</h2>

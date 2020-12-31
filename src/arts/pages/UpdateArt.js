@@ -39,7 +39,7 @@ const UpdateArt = () => {
   useEffect(() => {
     const fetchArt = async () => {
       try {
-        const reponseData = await sendRequest(`http://localhost:5000/api/arts/${artId}`);
+        const reponseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/arts/${artId}`);
         setLoadedArt(reponseData.art);
         setFormData(
           {
@@ -63,7 +63,7 @@ const UpdateArt = () => {
   const artUpdateSubmitHandler = async event => {
     event.preventDefault();
     try {
-      await sendRequest(`http://localhost:5000/api/arts/${artId}`, 
+      await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/arts/${artId}`, 
       'PATCH', 
       JSON.stringify({
         title: formState.inputs.title.value,

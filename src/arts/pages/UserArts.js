@@ -15,7 +15,7 @@ const UserArts = () => {
   useEffect(() => {
     const fetchArts = async () => {
       try {
-        const reponseData = await sendRequest(`http://localhost:5000/api/arts/user/${userId}`);
+        const reponseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/arts/user/${userId}`);
         setLoadedArts(reponseData.arts);
       }
       catch(err) {}
