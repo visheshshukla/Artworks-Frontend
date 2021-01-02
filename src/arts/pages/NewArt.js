@@ -90,7 +90,7 @@ const NewArt = () => {
         />
         <ImageUpload id="image" onInput={inputHandler} errorText="Please provide an image" />
         <Button type="submit" disabled={!formState.isValid}>
-          ADD PLACE
+          ADD ART
         </Button>
       </form>
     </React.Fragment>
