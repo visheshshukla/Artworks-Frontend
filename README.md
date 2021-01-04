@@ -20,6 +20,10 @@
 
 **All Users(Logged-In and Non-Logged-In) can view all Artworks and thier details(including Location on Map).**
 
+**Secure Authentication using JWT(json-web-token) with features like Auto Logout after certain time.**
+
+**Can be used on both Desktop and Mobile Devices.**
+
 **<ins>Technologies Used</ins> -**
 
 **Frontend- Using React, HTML, JavaScript, CSS, Bootstrap.  ||  Backend- Using Node Js.  ||   Database- MongoDB Atlas.**
